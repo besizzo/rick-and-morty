@@ -35,7 +35,6 @@ interface ICharacterData {
 
 export const fetchCharactersByPage = async (page: number): Promise<ICharacterData> => {
   const characterData = await axios.get(`${BASE_URL}/character/?page=${page}`);
-  console.log(characterData.data.info)
   return characterData.data
 }
 

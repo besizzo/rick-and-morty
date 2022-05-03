@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Box, TextField, Autocomplete, Typography } from '@mui/material';
+import { Box, TextField, Autocomplete } from '@mui/material';
 import { Chart } from './Chart';
 import { fetchCharactersByName } from 'api';
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ export type Character = {
   id: number,
   name: string,
   status?: string,
+  image?: string
 }
 
 const containerStyles = {
@@ -33,7 +34,6 @@ export const Main: React.FC = () => {
         const { id, name } = character;
         return { id, name };
       });
-      console.log(characters)
       setFoundCharacters(characters);
     } catch (error) {
       console.log(error);

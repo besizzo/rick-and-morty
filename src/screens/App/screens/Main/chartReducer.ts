@@ -10,13 +10,12 @@ type Character = {
   id: number,
   name: string,
   status: string,
+  image: string,
 };
 
 export enum ChartActionsType {
   SET_PAGE = 'SET_PAGE',
   CHANGE_PAGE = 'CHANGE_PAGE',
-  NEXT_PAGE = 'NEXT_PAGE',
-  PREV_PAGE = 'PREV_PAGE',
   CHAR_CLICK = 'CHAR_CLICK',
 }
 
@@ -44,9 +43,9 @@ export const reducer = (state: State, action: ChartActions): State => {
         characters: payload.characters,
         next: payload.next,
         prev: payload.prev,
-        pagesCount: payload.pagesCount,
+        pagesCount: payload.pagesCount
       })
-    };
+    }
 
     case ChartActionsType.CHANGE_PAGE: {
       return ({
@@ -54,23 +53,6 @@ export const reducer = (state: State, action: ChartActions): State => {
         page: payload,
       })
     }
-
-
-    // case CurrencyActionsType.INIT:
-    //   console.log(typeof payload.exchangeRate)
-    //   return ({
-    //     ...state,
-    //     fromCurrency: payload.fromCurrency,
-    //     toCurrency: payload.toCurrency,
-    //     currencyOptions: payload.currencyOptions[0],
-    //     headerRates: payload.headerRates,
-    //     exchangeRate: payload.exchangeRate,
-    //     amount: {
-    //       from: 1,
-    //       to: payload.exchangeRate,
-    //     },
-    //   });
-
 
     default:
       return state;
