@@ -58,7 +58,7 @@ export const Main: React.FC = () => {
 
   const handlePickCharacterOption = (value: Character | null) => {
     if (value !== null) {
-      navigate(`/character/${value.id}`)
+      navigate(`/character/${value.id}`, { state: value.id });
     }
   }
 

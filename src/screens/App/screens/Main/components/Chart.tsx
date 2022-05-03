@@ -1,5 +1,5 @@
 import { useEffect, useReducer } from 'react';
-import { Box, Pagination, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Pagination, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { fetchCharactersByPage } from 'api';
 import { Character } from './Main'
 import { reducer, initialState, ChartActionsType } from '../chartReducer';
@@ -48,7 +48,7 @@ export const Chart = () => {
   }
 
   const handleOnCharClick = (id: number) => {
-    navigate(`/character/${id}`)
+    navigate(`/character/${id}`, { state: id })
   }
 
   return (

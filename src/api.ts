@@ -33,6 +33,12 @@ interface ICharacterData {
   results: ICharacter[],
 };
 
+export const fetchCharactersById = async (id: number): Promise<ICharacterData> => {
+  const characterData = await axios.get(`${BASE_URL}/character/${id}`);
+  console.log(characterData.data)
+  return characterData.data
+}
+
 export const fetchCharactersByPage = async (page: number): Promise<ICharacterData> => {
   const characterData = await axios.get(`${BASE_URL}/character/?page=${page}`);
   return characterData.data
