@@ -16,7 +16,9 @@ type Character = {
 export enum ChartActionsType {
   SET_PAGE = 'SET_PAGE',
   CHANGE_PAGE = 'CHANGE_PAGE',
-  CHAR_CLICK = 'CHAR_CLICK',
+  // CHAR_CLICK = 'CHAR_CLICK',
+  ADD_FAV = 'ADD_FAV',
+  REMOVE_FAV = 'REMOVE_FAV',
 }
 
 type ChartActions = {

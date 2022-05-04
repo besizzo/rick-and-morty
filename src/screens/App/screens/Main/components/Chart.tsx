@@ -4,6 +4,7 @@ import { fetchCharactersByPage } from 'api';
 import { Character } from './Main'
 import { reducer, initialState, ChartActionsType } from '../chartReducer';
 import { useNavigate } from "react-router-dom";
+import star from 'img/star-wave.png';
 
 export const Chart = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -12,15 +13,11 @@ export const Chart = () => {
   const getCharacters = async (pageNumber = 1) => {
     try {
       const characterData = await fetchCharactersByPage(pageNumber);
-      const characterOptions = characterData.results.map((character) => {
-        const { id, name, status, image } = character;
-        return { id, name, status, image };
-      });
       dispatch({
         type: ChartActionsType.SET_PAGE,
         payload: {
           page: pageNumber,
-          characters: characterOptions,
+          characters: characterData.results,
           next: characterData.info.next,
           prev: characterData.info.prev,
           pagesCount: characterData.info.pages,
@@ -48,7 +45,13 @@ export const Chart = () => {
   }
 
   const handleOnCharClick = (id: number) => {
-    navigate(`/character/${id}`, { state: id })
+    const clickedChar = state.characters.filter(character => character.id === id);
+    navigate(`/character/${id}`, { state: clickedChar[0] })
+  }
+
+
+  const handleFavouritesClick = () => {
+    navigate(`/favourites`);
   }
 
   return (
@@ -57,19 +60,21 @@ export const Chart = () => {
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell></TableCell>
+              <TableCell onClick={handleFavouritesClick} >
+                <img src={star} alt='star' style={{ height: '40px', borderRadius: '50%', paddingLeft: '10px', cursor: 'pointer' }} />
+              </TableCell>
               <TableCell align="left">Full Name</TableCell>
               <TableCell align="right">Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {state.characters.map((char: Character) => (
-              <TableRow
+              <TableRow onClick={() => handleOnCharClick(char.id)}
                 key={char.id}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                sx={{ cursor: 'pointer', '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  <img src={char.image} alt='avatar' style={{ height: '65px', borderRadius: '50%' }} onClick={() => handleOnCharClick(char.id)} />
+                  <img src={char.image} alt='avatar' style={{ height: '65px', borderRadius: '50%' }} />
                 </TableCell>
                 <TableCell align="left">{char.name}</TableCell>
                 <TableCell align="right">{char.status}</TableCell>

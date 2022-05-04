@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Box, TextField, Autocomplete } from '@mui/material';
 import { Chart } from './Chart';
-import { fetchCharactersByName } from 'api';
+import { fetchCharactersByName, ICharacter } from 'api';
 import { useNavigate } from "react-router-dom";
 
 export type Character = {
@@ -11,30 +11,25 @@ export type Character = {
   image?: string
 }
 
-const containerStyles = {
-  color: '#FFFFFF',
+export const containerStyles = {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
   '& .MuiInput-input': {
     textAlign: "center",
-  }
+  },
 };
 
 export const Main: React.FC = () => {
   const navigate = useNavigate();
   const [input, setInput] = useState<string>();
-  const [foundCharacters, setFoundCharacters] = useState<Character[]>([]);
+  const [foundCharacters, setFoundCharacters] = useState<ICharacter[]>([]);
 
   const searchCharacters = async (name: string) => {
     try {
       const charactersData = await fetchCharactersByName(name);
-      const characters = charactersData.results.map((character) => {
-        const { id, name } = character;
-        return { id, name };
-      });
-      setFoundCharacters(characters);
+      setFoundCharacters(charactersData.results);
     } catch (error) {
       console.log(error);
     }
@@ -58,7 +53,8 @@ export const Main: React.FC = () => {
 
   const handlePickCharacterOption = (value: Character | null) => {
     if (value !== null) {
-      navigate(`/character/${value.id}`, { state: value.id });
+      const clickedChar = foundCharacters.filter(character => character.id === value.id);
+      navigate(`/character/${value.id}`, { state: clickedChar[0] })
     }
   }
 
@@ -70,10 +66,10 @@ export const Main: React.FC = () => {
         disablePortal
         id="character-list"
         options={foundCharacters}
-        getOptionLabel={(option: Character) => option.name}
+        getOptionLabel={(option: ICharacter) => option.name}
         sx={{ width: 300, marginTop: '15px' }}
         onChange={(e, value) => handlePickCharacterOption(value)}
-        noOptionsText={'Start *burp* typing for results'}
+        noOptionsText={'Start typing for *burp* results'}
         renderInput={(params) =>
           <TextField {...params}
             variant="standard"

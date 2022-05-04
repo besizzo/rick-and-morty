@@ -1,6 +1,4 @@
-// import { Header } from "./components/Header";
-// import { MainContainer } from "./components/MainContainer";
-
+import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Box } from '@mui/material';
 import routeConstants from 'shared/constants/routes';
@@ -14,22 +12,28 @@ const {
   MAIN, CHARACTER, FAVOURITES,
 } = routeConstants;
 
+export const containerStyles = {
+  height: '90vh',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  '& .MuiInput-input': {
+    textAlign: "center",
+  },
+};
+
 export const App = () => {
-  // const params = useParams();
+  const [favChars, setFavChars] = useState<number[]>([])
+
   return (
     <>
       <Header />
       <Box sx={{ height: '90vh' }}>
         <Routes>
-          <Route path={CHARACTER.route} element={<Character />} />
-          <Route path={FAVOURITES.route} element={<Favourites />} />
+          <Route path={CHARACTER.route} element={<Character addToFav={setFavChars} />} />
+          <Route path={FAVOURITES.route} element={<Favourites ids={favChars} />} />
           <Route path={MAIN.route} element={<Main />} />
-          {/* <Route path={CHARACTER.route}>
-          <h1>{CHARACTER.name}</h1>
-        </Route>
-        <Route path={FAVOURITES.route}>
-          <h1>{FAVOURITES.name}</h1>
-        </Route> */}
         </Routes>
       </Box>
     </>
