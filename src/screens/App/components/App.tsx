@@ -6,6 +6,7 @@ import { Header } from './Header';
 import { Main } from '../screens/Main';
 import { Character } from '../screens/Character';
 import { Favourites } from '../screens/Favourites';
+import { reducer, initialState, ChartActionsType } from '../screens/Main/chartReducer';
 
 
 const {
@@ -24,15 +25,16 @@ export const containerStyles = {
 };
 
 export const App = () => {
-  const [favChars, setFavChars] = useState<number[]>([])
+  const [favCharIds, setFavCharIds] = useState<number[]>([])
+
 
   return (
     <>
       <Header />
       <Box sx={{ height: '90vh' }}>
         <Routes>
-          <Route path={CHARACTER.route} element={<Character addToFav={setFavChars} />} />
-          <Route path={FAVOURITES.route} element={<Favourites ids={favChars} />} />
+          <Route path={CHARACTER.route} element={<Character addToFav={setFavCharIds} />} />
+          <Route path={FAVOURITES.route} element={<Favourites charIds={favCharIds} />} />
           <Route path={MAIN.route} element={<Main />} />
         </Routes>
       </Box>

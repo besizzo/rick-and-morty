@@ -4,13 +4,28 @@ export type State = {
   next: string | null,
   prev: string | null,
   pagesCount: number,
+  favourites: number[],
 }
 
 type Character = {
+  created: string,
+  episode: string[],
+  gender: string,
   id: number,
-  name: string,
-  status: string,
   image: string,
+  location: {
+    name: string,
+    url: string,
+  },
+  name: string,
+  origin: {
+    name: string,
+    url: string,
+  },
+  species: string,
+  status: string,
+  type: string,
+  url: string,
 };
 
 export enum ChartActionsType {
@@ -32,6 +47,7 @@ export const initialState: State = {
   next: null,
   prev: null,
   pagesCount: 0,
+  favourites: [],
 }
 
 export const reducer = (state: State, action: ChartActions): State => {
@@ -50,6 +66,13 @@ export const reducer = (state: State, action: ChartActions): State => {
     }
 
     case ChartActionsType.CHANGE_PAGE: {
+      return ({
+        ...state,
+        favourites: [...state.favourites, payload],
+      })
+    }
+
+    case ChartActionsType.ADD_FAV: {
       return ({
         ...state,
         page: payload,

@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from 'react';
 import { Pagination, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { fetchCharactersByPage } from 'api';
+import { fetchCharactersByPage, ICharacter } from 'api';
 import { Character } from './Main'
 import { reducer, initialState, ChartActionsType } from '../chartReducer';
 import { useNavigate } from "react-router-dom";
@@ -68,7 +68,7 @@ export const Chart = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {state.characters.map((char: Character) => (
+            {state.characters.map((char: ICharacter) => (
               <TableRow onClick={() => handleOnCharClick(char.id)}
                 key={char.id}
                 sx={{ cursor: 'pointer', '&:last-child td, &:last-child th': { border: 0 } }}
