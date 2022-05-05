@@ -1,13 +1,16 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useContext } from 'react';
 import { Pagination, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { fetchCharactersByPage, ICharacter } from 'api';
-import { Character } from './Main'
-import { reducer, initialState, ChartActionsType } from '../chartReducer';
+// import { Character } from './Main'
+import { ChartActionsType } from 'screens/App/reducer';
 import { useNavigate } from "react-router-dom";
 import star from 'img/star-wave.png';
+import { MainProps } from './Main';
+import { Characters } from './Characters';
 
-export const Chart = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+
+export const Chart: React.FC<MainProps> = ({ state, dispatch }) => {
+  // const [state, dispatch] = useReducer(reducer, initialState);
   const navigate = useNavigate();
 
   const getCharacters = async (pageNumber = 1) => {

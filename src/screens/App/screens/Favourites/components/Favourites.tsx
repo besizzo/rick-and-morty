@@ -1,5 +1,4 @@
-import { useState, useEffect, useReducer } from 'react';
-import { reducer, initialState, ChartActionsType } from '../../Main/chartReducer';
+import { useState, useEffect } from 'react';
 import { fetchCharactersById, ICharacter } from 'api';
 
 type FavProps = {
@@ -11,11 +10,14 @@ export const Favourites: React.FC<FavProps> = ({ charIds }) => {
 
   const getFavouriteChars = async (ids: number[]) => {
     const favChars = await fetchCharactersById(ids)
+    console.log(favChars)
     setFavCharacters(favChars.results)
   }
 
   useEffect(() => {
-    getFavouriteChars(charIds)
+    if (charIds.length !== 0) {
+      getFavouriteChars(charIds)
+    }
   }, [])
 
   return (

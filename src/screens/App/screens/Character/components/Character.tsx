@@ -1,15 +1,17 @@
+import { useEffect, useReducer } from 'react';
 import { ICharacter } from 'api';
 import { useLocation } from 'react-router-dom'
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableRow, IconButton } from '@mui/material';
 import SentimentVeryDissatisfiedOutlinedIcon from '@mui/icons-material/SentimentVeryDissatisfiedOutlined';
 import InsertEmoticonOutlinedIcon from '@mui/icons-material/InsertEmoticonOutlined';
 import { containerStyles } from '../../Main/components/Main'
+import { ChartActionsType, ChartActions } from 'screens/App/reducer';
 
 type CharProps = {
-  addToFav: React.Dispatch<React.SetStateAction<number[]>>
+  dispatch: React.Dispatch<ChartActions>
 }
 
-export const Character: React.FC<CharProps> = ({ addToFav }) => {
+export const Character: React.FC<CharProps> = ({ dispatch }) => {
   const location = useLocation();
   const charInfo = location.state as ICharacter
   const createdDate = new Date(charInfo.created).toDateString().split(' ')
@@ -45,8 +47,13 @@ export const Character: React.FC<CharProps> = ({ addToFav }) => {
   ]
 
   const handleAddToFavList = () => {
-    addToFav(prev => [...prev, charInfo.id])
+    // addToFav(prev => [...prev, charInfo.id])
+    dispatch({
+      type: ChartActionsType.ADD_FAV,
+      payload: charInfo.id,
+    })
   }
+
 
   return (
     <Box sx={containerStyles}>

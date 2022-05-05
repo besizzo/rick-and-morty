@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Box, TextField, Autocomplete } from '@mui/material';
 import { Chart } from './Chart';
-import { fetchCharactersByName, ICharacter } from 'api';
+import { fetchCharactersByName, ICharacter, } from 'api';
+import { ChartActions, State } from 'screens/App/reducer';
 import { useNavigate } from "react-router-dom";
 
-export type Character = {
-  id: number,
-  name: string,
-  status?: string,
-  image?: string
-}
+// export type Character = {
+//   id: number,
+//   name: string,
+//   status?: string,
+//   image?: string
+// }
+
 
 export const containerStyles = {
   display: 'flex',
@@ -21,7 +23,12 @@ export const containerStyles = {
   },
 };
 
-export const Main: React.FC = () => {
+export type MainProps = {
+  dispatch: React.Dispatch<ChartActions>,
+  state: State,
+};
+
+export const Main: React.FC<MainProps> = ({ state, dispatch }) => {
   const navigate = useNavigate();
   const [input, setInput] = useState<string>();
   const [foundCharacters, setFoundCharacters] = useState<ICharacter[]>([]);
@@ -51,7 +58,7 @@ export const Main: React.FC = () => {
     setInput(event.target.value);
   }
 
-  const handlePickCharacterOption = (value: Character | null) => {
+  const handlePickCharacterOption = (value: ICharacter | null) => {
     if (value !== null) {
       const clickedChar = foundCharacters.filter(character => character.id === value.id);
       navigate(`/character/${value.id}`, { state: clickedChar[0] })
@@ -85,7 +92,7 @@ export const Main: React.FC = () => {
           );
         }}
       />
-      <Chart />
+      <Chart dispatch={dispatch} state={state} />
     </Box>
   );
 };
