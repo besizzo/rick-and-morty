@@ -8,7 +8,6 @@ import { Character } from '../screens/Character';
 import { Favourites } from '../screens/Favourites';
 import { reducer, initialState, ChartActionsType } from '../reducer';
 
-
 const {
   MAIN, CHARACTER, FAVOURITES,
 } = routeConstants;
@@ -35,8 +34,6 @@ export const App = () => {
       payload: savedFavIds,
     })
   }, [])
-
-
 
   return (
     <>

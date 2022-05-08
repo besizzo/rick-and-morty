@@ -41,8 +41,7 @@ export const Favourites: React.FC<FavProps> = ({ favCharIds }) => {
           <Characters
             characters={favCharacters}
             favCharIds={favCharIds}
-            handleOnCharClick={charClick} />
-        }
+            handleOnCharClick={charClick} />}
       </Box>
     </>
   );
