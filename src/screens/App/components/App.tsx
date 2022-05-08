@@ -1,4 +1,4 @@
-import { useReducer, useContext, createContext } from 'react';
+import { useReducer, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Box } from '@mui/material';
 import routeConstants from 'shared/constants/routes';
@@ -26,16 +26,25 @@ export const containerStyles = {
 
 export const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  // const StateContext = createContext({ state, dispatch })
-  // const StateContext = createContext({ state, dispatch })
+
+  useEffect(() => {
+    const savedFavIds = JSON.parse(localStorage.getItem("favourites") ?? "[]");
+
+    dispatch({
+      type: ChartActionsType.GET_STORAGE,
+      payload: savedFavIds,
+    })
+  }, [])
+
+
 
   return (
     <>
       <Header />
       <Box sx={{ height: '90vh' }}>
         <Routes>
-          <Route path={CHARACTER.route} element={<Character dispatch={dispatch} />} />
-          <Route path={FAVOURITES.route} element={<Favourites charIds={state.favCharIds} />} />
+          <Route path={CHARACTER.route} element={<Character dispatch={dispatch} favCharIds={state.favCharIds} />} />
+          <Route path={FAVOURITES.route} element={<Favourites favCharIds={state.favCharIds} />} />
           <Route path={MAIN.route} element={<Main dispatch={dispatch} state={state} />} />
         </Routes>
       </Box>

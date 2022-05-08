@@ -11,5 +11,4 @@ export default Object.freeze({
     name: 'character',
     route: '/character/:id',
   },
-})
-
+});

@@ -5,14 +5,6 @@ import { fetchCharactersByName, ICharacter, } from 'api';
 import { ChartActions, State } from 'screens/App/reducer';
 import { useNavigate } from "react-router-dom";
 
-// export type Character = {
-//   id: number,
-//   name: string,
-//   status?: string,
-//   image?: string
-// }
-
-
 export const containerStyles = {
   display: 'flex',
   flexDirection: 'column',
@@ -45,14 +37,14 @@ export const Main: React.FC<MainProps> = ({ state, dispatch }) => {
   useEffect(() => {
     if (!input) {
       setFoundCharacters([]);
-      return
+      return;
     }
     const timer = setTimeout(() => {
       searchCharacters(input);
     }, 300);
     return () => clearTimeout(timer);
 
-  }, [input])
+  }, [input]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setInput(event.target.value);
@@ -61,7 +53,7 @@ export const Main: React.FC<MainProps> = ({ state, dispatch }) => {
   const handlePickCharacterOption = (value: ICharacter | null) => {
     if (value !== null) {
       const clickedChar = foundCharacters.filter(character => character.id === value.id);
-      navigate(`/character/${value.id}`, { state: clickedChar[0] })
+      navigate(`/character/${value.id}`, { state: clickedChar[0] });
     }
   }
 

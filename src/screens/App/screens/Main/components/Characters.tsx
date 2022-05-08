@@ -2,17 +2,21 @@ import { useReducer } from 'react';
 import { Pagination, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { ICharacter } from 'api';
 import { useNavigate, useLocation } from "react-router-dom";
-// import { reducer, initialState, ChartActionsType } from '../chartReducer';
+import { reducer, initialState, ChartActionsType, ChartActions } from 'screens/App/reducer';
 import star from 'img/star-wave.png';
 
 type CharTableProps = {
   // handleFavouritesClick: () => void,
   characters: ICharacter[],
+  main?: boolean,
+  dispatch: React.Dispatch<ChartActions>,
 }
 
-export const Charactes: React.FC<CharTableProps> = ({ characters }) => {
+export const Characters: React.FC<CharTableProps> = ({ characters, main, dispatch }) => {
   const location = useLocation();
   const navigate = useNavigate();
+
+
   const handleFavouritesClick = () => {
     navigate(`/favourites`);
   }
@@ -23,10 +27,10 @@ export const Charactes: React.FC<CharTableProps> = ({ characters }) => {
   }
 
   const handlePageChange = (pageNumber: number) => {
-    // dispatch({
-    //   type: ChartActionsType.CHANGE_PAGE,
-    //   payload: pageNumber,
-    // })
+    dispatch({
+      type: ChartActionsType.CHANGE_PAGE,
+      payload: pageNumber,
+    })
   }
 
   return (
@@ -35,9 +39,9 @@ export const Charactes: React.FC<CharTableProps> = ({ characters }) => {
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell onClick={handleFavouritesClick} >
+              {!main && <TableCell onClick={handleFavouritesClick} >
                 <img src={star} alt='star' style={{ height: '40px', borderRadius: '50%', paddingLeft: '10px', cursor: 'pointer' }} />
-              </TableCell>
+              </TableCell>}
               <TableCell align="left">Full Name</TableCell>
               <TableCell align="right">Status</TableCell>
             </TableRow>
@@ -58,7 +62,7 @@ export const Charactes: React.FC<CharTableProps> = ({ characters }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      {/* <Pagination count={state.pagesCount} onChange={(event, id) => handlePageChange(id)} style={{ padding: 10 }} /> */}
+      {/* {!main && <Pagination count={state.pagesCount} onChange={(event, id) => handlePageChange(id)} style={{ padding: 10 }} />} */}
     </>
   );
 }

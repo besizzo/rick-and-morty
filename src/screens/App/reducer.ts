@@ -29,9 +29,9 @@ type Character = {
 };
 
 export enum ChartActionsType {
+  GET_STORAGE = 'GET_STORAGE',
   SET_PAGE = 'SET_PAGE',
   CHANGE_PAGE = 'CHANGE_PAGE',
-  // CHAR_CLICK = 'CHAR_CLICK',
   ADD_FAV = 'ADD_FAV',
   REMOVE_FAV = 'REMOVE_FAV',
 }
@@ -54,13 +54,18 @@ export const reducer = (state: State, action: ChartActions): State => {
   const { type, payload } = action;
 
   switch (type) {
+    case ChartActionsType.GET_STORAGE: {
+      return ({
+        ...state,
+        favCharIds: payload,
+      })
+    }
+
     case ChartActionsType.SET_PAGE: {
       return ({
         ...state,
         page: payload.page,
         characters: payload.characters,
-        next: payload.next,
-        prev: payload.prev,
         pagesCount: payload.pagesCount
       })
     }
@@ -73,10 +78,20 @@ export const reducer = (state: State, action: ChartActions): State => {
     }
 
     case ChartActionsType.ADD_FAV: {
-      console.log(`adding ${payload}`)
+      if (state.favCharIds.includes(payload)) return { ...state }
+      localStorage.setItem("favourites", JSON.stringify([...state.favCharIds, payload]));
       return ({
         ...state,
         favCharIds: [...state.favCharIds, payload],
+      })
+    }
+
+    case ChartActionsType.REMOVE_FAV: {
+      const updatedList = state.favCharIds.filter(id => id !== payload);
+      localStorage.setItem("favourites", JSON.stringify(updatedList));
+      return ({
+        ...state,
+        favCharIds: updatedList,
       })
     }
 

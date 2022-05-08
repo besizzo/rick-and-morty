@@ -1,4 +1,3 @@
-import { useEffect, useReducer } from 'react';
 import { ICharacter } from 'api';
 import { useLocation } from 'react-router-dom'
 import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableRow, IconButton } from '@mui/material';
@@ -6,18 +5,23 @@ import SentimentVeryDissatisfiedOutlinedIcon from '@mui/icons-material/Sentiment
 import InsertEmoticonOutlinedIcon from '@mui/icons-material/InsertEmoticonOutlined';
 import { containerStyles } from '../../Main/components/Main'
 import { ChartActionsType, ChartActions } from 'screens/App/reducer';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 type CharProps = {
-  dispatch: React.Dispatch<ChartActions>
+  dispatch: React.Dispatch<ChartActions>,
+  favCharIds: number[],
 }
 
-export const Character: React.FC<CharProps> = ({ dispatch }) => {
+const getDateCreated = (info: ICharacter) => {
+  const date = new Date(info.created).toDateString().split(' ');
+  date.shift();
+  return date.join('-')
+};
+
+export const Character: React.FC<CharProps> = ({ dispatch, favCharIds }) => {
   const location = useLocation();
   const charInfo = location.state as ICharacter
-  const createdDate = new Date(charInfo.created).toDateString().split(' ')
-  createdDate.shift()
-  let formattedDate;
-  if (createdDate) formattedDate = createdDate.join('-')
+  const dateCreated = getDateCreated(charInfo)
 
   const rows = [
     {
@@ -38,7 +42,7 @@ export const Character: React.FC<CharProps> = ({ dispatch }) => {
     },
     {
       title: 'Created:',
-      value: formattedDate || '',
+      value: dateCreated,
     },
     {
       title: 'Episodes:',
@@ -47,9 +51,14 @@ export const Character: React.FC<CharProps> = ({ dispatch }) => {
   ]
 
   const handleAddToFavList = () => {
-    // addToFav(prev => [...prev, charInfo.id])
     dispatch({
       type: ChartActionsType.ADD_FAV,
+      payload: charInfo.id,
+    })
+  }
+  const handleRemoveFromFavList = () => {
+    dispatch({
+      type: ChartActionsType.REMOVE_FAV,
       payload: charInfo.id,
     })
   }
@@ -57,7 +66,10 @@ export const Character: React.FC<CharProps> = ({ dispatch }) => {
 
   return (
     <Box sx={containerStyles}>
-      <Typography variant='h4' py={2}>{charInfo.name}</Typography>
+      {/* {favCharIds.includes(charInfo.id) && <FavoriteIcon sx={{ color: "#f08080", fontSize: 25, position: 'absolute', }} />} */}
+      <Typography variant='h4' py={2}>
+        {charInfo.name}
+      </Typography>
       <Box>
         <img src={charInfo.image} alt='avatar' style={{ maxWidth: 600, border: '1px solid black' }} />
       </Box>
@@ -65,7 +77,7 @@ export const Character: React.FC<CharProps> = ({ dispatch }) => {
         <IconButton sx={{ marginX: 5 }} onClick={handleAddToFavList}>
           <InsertEmoticonOutlinedIcon sx={{ fontSize: '40px', color: '#76c893' }} />
         </IconButton>
-        <IconButton sx={{ marginX: 5 }} >
+        <IconButton sx={{ marginX: 5 }} onClick={handleRemoveFromFavList}>
           <SentimentVeryDissatisfiedOutlinedIcon sx={{ fontSize: '40px', color: '#f9844a' }} />
         </IconButton>
       </Box>
