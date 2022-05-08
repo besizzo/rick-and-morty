@@ -5,7 +5,6 @@ import SentimentVeryDissatisfiedOutlinedIcon from '@mui/icons-material/Sentiment
 import InsertEmoticonOutlinedIcon from '@mui/icons-material/InsertEmoticonOutlined';
 import { containerStyles } from '../../Main/components/Main'
 import { ChartActionsType, ChartActions } from 'screens/App/reducer';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 
 type CharProps = {
   dispatch: React.Dispatch<ChartActions>,
@@ -66,7 +65,6 @@ export const Character: React.FC<CharProps> = ({ dispatch, favCharIds }) => {
 
   return (
     <Box sx={containerStyles}>
-      {/* {favCharIds.includes(charInfo.id) && <FavoriteIcon sx={{ color: "#f08080", fontSize: 25, position: 'absolute', }} />} */}
       <Typography variant='h4' py={2}>
         {charInfo.name}
       </Typography>

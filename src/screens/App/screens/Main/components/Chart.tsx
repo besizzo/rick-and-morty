@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import { Pagination, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { fetchCharactersByPage, ICharacter } from 'api';
+import { Pagination } from '@mui/material';
+import { fetchCharactersByPage } from 'api';
 import { ChartActionsType } from 'screens/App/reducer';
 import { useNavigate } from "react-router-dom";
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import { MainProps } from './Main';
+import { Characters } from './Characters';
 
 export const Chart: React.FC<MainProps> = ({ state, dispatch }) => {
   const navigate = useNavigate();
@@ -41,41 +41,21 @@ export const Chart: React.FC<MainProps> = ({ state, dispatch }) => {
     });
   };
 
-  const handleOnCharClick = (id: number) => {
+  const charClick = (id: number) => {
     const clickedChar = state.characters.filter(character => character.id === id);
     navigate(`/character/${id}`, { state: clickedChar[0] });
   };
 
   return (
     <>
-      <TableContainer sx={{ maxWidth: 600 }}>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell></TableCell>
-              <TableCell align="left">Full Name</TableCell>
-              <TableCell align="right">Status</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {state.characters.map((char: ICharacter) => (
-              <TableRow onClick={() => handleOnCharClick(char.id)}
-                key={char.id}
-                sx={{ cursor: 'pointer', '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell component="th" scope="row" sx={{ width: 65 }}>
-                  <img src={char.image} alt='avatar' style={{ height: '65px', borderRadius: '50%' }} />
-                  {state.favCharIds.includes(char.id) && <FavoriteIcon sx={{ position: 'absolute', height: 15, marginLeft: -1, color: "#f08080" }} />}
-                </TableCell>
-                <TableCell align="left">
-                  {char.name}
-                </TableCell>
-                <TableCell align="right">{char.status}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Pagination count={state.pagesCount} onChange={(event, id) => handlePageChange(id)} style={{ padding: 10 }} />
+      <Characters
+        characters={state.characters}
+        favCharIds={state.favCharIds}
+        handleOnCharClick={charClick} />
+      <Pagination
+        count={state.pagesCount}
+        onChange={(event, id) => handlePageChange(id)}
+        style={{ padding: 10 }} />
     </>
   );
 };
